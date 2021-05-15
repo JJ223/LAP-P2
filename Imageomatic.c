@@ -13,7 +13,7 @@ tab = 4 espaços
 
 
  IDENTIFICAÇÃO DOS AUTORES -
-	Aluno 1: numero, nome
+	Aluno 1: 57796, Afonso Batista
 	Aluno 2: numero, nome
 
 Comentarios:
