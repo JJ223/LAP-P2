@@ -66,6 +66,7 @@ Int2 imageCopy(Image img, Int2 n, Image res)
 
 Int2 imagePaint(String cor, Int2 n, Image res)
 {
+	
 	return int2Error;
 }
 
