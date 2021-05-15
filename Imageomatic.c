@@ -58,6 +58,7 @@ Int2 imageCopy(Image img, Int2 n, Image res)
 {
 	Int2 i;
 	for(i.y = 0; i.y < n.y; i.y++)
+<<<<<<< HEAD
 	for(i.x = 0; i.x < n.x; i.x++) {
 		res[i.x][i.y] = img[i.x][i.y];
 	}
@@ -67,6 +68,17 @@ Int2 imageCopy(Image img, Int2 n, Image res)
 Int2 imagePaint(String cor, Int2 n, Image res)
 {	
 	fopen(colorsFileName, "r");
+=======
+		for(i.x = 0; i.x < n.x; i.x++) {
+			res[i.x][i.y] = img[i.x][i.y];
+		}
+	return n;
+}
+
+Int2 imagePaint(String cor, Int2 n, Image res)
+{
+
+>>>>>>> 847d0883a825ba2064251547945d3f466d5fa109
 	return int2Error;
 }
 
@@ -74,11 +86,11 @@ Int2 imageNegative(Image img, Int2 n, Image res)
 {
 	Int2 i;
 	for(i.y = 0; i.y < n.y; i.y++)
-	for(i.x = 0; i.x < n.x; i.x++) {
-		res[i.x][i.y].blue = MAX_COLOR - img[i.x][i.y].blue;
-		res[i.x][i.y].red = MAX_COLOR - img[i.x][i.y].red;
-		res[i.x][i.y].green = MAX_COLOR - img[i.x][i.y].green;
-	}
+		for(i.x = 0; i.x < n.x; i.x++) {
+			res[i.x][i.y].blue = MAX_COLOR - img[i.x][i.y].blue;
+			res[i.x][i.y].red = MAX_COLOR - img[i.x][i.y].red;
+			res[i.x][i.y].green = MAX_COLOR - img[i.x][i.y].green;
+		}
 
 	return i;
 }
@@ -97,9 +109,18 @@ Int2 imageGrayscale(Image img, Int2 n, Image res)
 {
 	Int2 i;
 	for(i.y = 0; i.y < n.y; i.y++)
+<<<<<<< HEAD
 	for(i.x = 0; i.x < n.x; i.x++) {
 		res[i.x][i.y] = pixelGray(pixelGrayAverage(img[i.x][i.y]));
 	}
+=======
+		for(i.x = 0; i.x < n.x; i.x++) {
+			int avg = (img[i.x][i.y].red + img[i.x][i.y].green + img[i.x][i.y].blue) / 3;
+			res[i.x][i.y].blue = avg;
+			res[i.x][i.y].red = avg;
+			res[i.x][i.y].green = avg;
+		}
+>>>>>>> 847d0883a825ba2064251547945d3f466d5fa109
 
 	return i;
 }
@@ -121,7 +142,14 @@ Int2 imagePosterize(Image img, Int2 n, int factor, Image res)
 
 Int2 imageHalf(Image img, Int2 n, Image res)
 {
-	return int2Error;
+	Int2 i;
+
+	for(i.y = 0; i.y < n.y/2; i.y++)
+		for(i.x = 0; i.x < n.x/2; i.x++) {
+			res[i.x][i.y] = img[i.x*2][i.y*2];
+		}
+	
+	return n;
 }
 
 Int2 imageFunctionPlotting(DoubleFun fun, int scale, Int2 n, Image res)
