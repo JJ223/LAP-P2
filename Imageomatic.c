@@ -14,7 +14,7 @@ tab = 4 espaços
 
  IDENTIFICAÇÃO DOS AUTORES -
 	Aluno 1: 57796, Afonso Batista
-	Aluno 2: numero, nome
+	Aluno 2: 57994, Joao Jorge
 
 Comentarios:
 
