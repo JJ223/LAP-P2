@@ -61,11 +61,12 @@ Int2 imageCopy(Image img, Int2 n, Image res)
 	for(i.x = 0; i.x < n.x; i.x++) {
 		res[i.x][i.y] = img[i.x][i.y];
 	}
-	return n;
+	return i;
 }
 
 Int2 imagePaint(String cor, Int2 n, Image res)
-{
+{	
+	fopen(colorsFileName, "r");
 	return int2Error;
 }
 
@@ -79,7 +80,7 @@ Int2 imageNegative(Image img, Int2 n, Image res)
 		res[i.x][i.y].green = MAX_COLOR - img[i.x][i.y].green;
 	}
 
-	return n;
+	return i;
 }
 
 Int2 imageDroplet(Int2 n, Image res)
@@ -97,13 +98,10 @@ Int2 imageGrayscale(Image img, Int2 n, Image res)
 	Int2 i;
 	for(i.y = 0; i.y < n.y; i.y++)
 	for(i.x = 0; i.x < n.x; i.x++) {
-		int avg = (img[i.x][i.y].red + img[i.x][i.y].green + img[i.x][i.y].blue) / 3;
-		res[i.x][i.y].blue = avg;
-		res[i.x][i.y].red = avg;
-		res[i.x][i.y].green = avg;
+		res[i.x][i.y] = pixelGray(pixelGrayAverage(img[i.x][i.y]));
 	}
 
-	return n;
+	return i;
 }
 
 Int2 imageBlur(Image img, Int2 n, int nivel, Image res)
