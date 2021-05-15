@@ -72,7 +72,15 @@ Int2 imagePaint(String cor, Int2 n, Image res)
 
 Int2 imageNegative(Image img, Int2 n, Image res)
 {
-	return int2Error;
+	Int2 i;
+	for(i.y = 0; i.y < n.y; i.y++)
+	for(i.x = 0; i.x < n.x; i.x++) {
+		res[i.x][i.y].blue = MAX_COLOR - img[i.x][i.y].blue;
+		res[i.x][i.y].red = MAX_COLOR - img[i.x][i.y].red;
+		res[i.x][i.y].green = MAX_COLOR - img[i.x][i.y].green;
+	}
+
+	return n;
 }
 
 Int2 imageDroplet(Int2 n, Image res)
@@ -87,7 +95,16 @@ Int2 imageMask(Image img1, Int2 n1, Image img2, Int2 n2, Image res) // pre: int2
 
 Int2 imageGrayscale(Image img, Int2 n, Image res)
 {
-	return int2Error;
+	Int2 i;
+	for(i.y = 0; i.y < n.y; i.y++)
+	for(i.x = 0; i.x < n.x; i.x++) {
+		int avg = (img[i.x][i.y].red + img[i.x][i.y].green + img[i.x][i.y].blue) / 3;
+		res[i.x][i.y].blue = avg;
+		res[i.x][i.y].red = avg;
+		res[i.x][i.y].green = avg;
+	}
+
+	return n;
 }
 
 Int2 imageBlur(Image img, Int2 n, int nivel, Image res)
