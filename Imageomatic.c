@@ -66,8 +66,38 @@ Int2 imageCopy(Image img, Int2 n, Image res)
 
 Int2 imagePaint(String cor, Int2 n, Image res)
 {	
-	fopen(colorsFileName, "r");
-	return int2Error;
+	#define MAX_LINE   1024
+	typedef char Line[MAX_LINE];
+	FILE *fp = fopen(colorsFileName, "r");
+	Line s;
+	int total_read;
+	Pixel p = pixel(0,0,0);
+
+	char rgb[6], name[30];
+	char red[3], blue[3], green[3];
+
+	 while( fgets(s, MAX_LINE, fp) != NULL ){
+		 sscanf(s,"%s %s", rgb, name);
+		 if(!strcmp(name, cor)){
+			memset(red, '\0', sizeof(red));
+			strncpy(red, rgb, 2);
+			memset(blue, '\0', sizeof(blue));
+			strncpy(blue, rgb+2, 2);
+			memset(green, '\0', sizeof(green));
+			strncpy(green, rgb+4, 2);
+
+			p = pixel(strtol(red,NULL, 16),strtol(blue,NULL, 16),strtol(green,NULL, 16));
+		 }
+	 }
+
+	 Int2 i;
+
+	 for(i.y = 0; i.y < n.y; i.y++)
+		for(i.x = 0; i.x < n.x; i.x++) {
+			res[i.x][i.y] = p;
+		}
+
+	return i;
 }
 
 Int2 imageNegative(Image img, Int2 n, Image res)
@@ -111,7 +141,13 @@ Int2 imageBlur(Image img, Int2 n, int nivel, Image res)
 
 Int2 imageRotation90(Image img, Int2 n, Image res)
 {
-	return int2Error;
+	Int2 i;
+	for(i.y = 0; i.y < n.y; i.y++)
+		for(i.x = 0; i.x < n.x; i.x++) {
+			res[i.x][i.y] = img[n.x - i.y][n.y - i.x];
+		}
+
+	return i;
 }
 
 Int2 imagePosterize(Image img, Int2 n, int factor, Image res)
