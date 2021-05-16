@@ -128,7 +128,7 @@ Int2 imageHalf(Image img, Int2 n, Image res)
 			res[i.x][i.y] = img[i.x*2][i.y*2];
 		}
 	
-	return n;
+	return i;
 }
 
 Int2 imageFunctionPlotting(DoubleFun fun, int scale, Int2 n, Image res)
