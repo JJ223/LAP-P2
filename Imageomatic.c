@@ -151,8 +151,21 @@ Int2 imageRotation90(Image img, Int2 n, Image res)
 }
 
 Int2 imagePosterize(Image img, Int2 n, int factor, Image res)
-{
-	return int2Error;
+{	
+	int nColors;
+	if( factor != 0) {
+		nColors = pow(2, factor);
+	} else nColors = 0;
+
+	int diff = 256/nColors;
+
+	Int2 i;
+	for(i.y = 0; i.y < n.y; i.y++)
+		for(i.x = 0; i.x < n.x; i.x++) {
+			res[i.x][i.y] = pixel((img[i.x][i.y].red/diff)*diff, (img[i.x][i.y].green/diff)*diff,(img[i.x][i.y].blue/diff)*diff);
+		}
+
+	return i;
 }
 
 Int2 imageHalf(Image img, Int2 n, Image res)
