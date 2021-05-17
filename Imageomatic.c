@@ -140,9 +140,31 @@ Int2 imageGrayscale(Image img, Int2 n, Image res)
 	return i;
 }
 
+Pixel colorBlur(Int2 n, int nivel, Image img, int x, int y){
+	int red = 0;
+	int green = 0;
+	int blue = 0;
+	int counter = 0;
+
+	for(int j = -nivel; j < nivel+1; j++)
+		for(int k = -nivel; k < nivel+1; k++)
+			if( n.y > y+j && y+j >= 0 && n.x > x+k && x+k >= 0){
+				red += img[x+k][y+j].red;
+				green += img[x+k][y+j].green;
+				blue += img[x+k][y+j].blue;
+				counter++;
+			}
+	return pixel(red/counter, green/counter, blue/counter);
+}
+
 Int2 imageBlur(Image img, Int2 n, int nivel, Image res)
-{
-	return int2Error;
+{	
+	Int2 i;
+	for(i.y = 0; i.y < n.y; i.y++)
+		for(i.x = 0; i.x < n.x; i.x++) 
+			res[i.x][i.y] = colorBlur(n, nivel, img, i.x, i.y);
+
+	return i;
 }
 
 Int2 imageRotation90(Image img, Int2 n, Image res)
