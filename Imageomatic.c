@@ -115,7 +115,13 @@ Int2 imageNegative(Image img, Int2 n, Image res)
 
 Int2 imageDroplet(Int2 n, Image res)
 {
-	return int2Error;
+		Int2 i;
+	for(i.y = 0; i.y < n.y; i.y++)
+		for(i.x = 0; i.x < n.x; i.x++) {
+			res[i.x][i.y] = pixelGray(0.7 * MAX_COLOR + 0.3 * sin(int2Distance(int2Half(n), i) / 20.0) * MAX_COLOR);
+		}
+
+	return i;
 }
 
 Int2 imageMask(Image img1, Int2 n1, Image img2, Int2 n2, Image res) // pre: int2Equals(n1, n2)
@@ -157,7 +163,7 @@ Int2 imagePosterize(Image img, Int2 n, int factor, Image res)
 		nColors = pow(2, factor);
 	} else nColors = 0;
 
-	int diff = 256/nColors;
+	int diff = MAX_COLOR/nColors;
 
 	Int2 i;
 	for(i.y = 0; i.y < n.y; i.y++)
