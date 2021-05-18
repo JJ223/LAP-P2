@@ -222,8 +222,8 @@ Int2 imageFunctionPlotting(DoubleFun fun, int scale, Int2 n, Image res)
 
 	int f;
 	for(int f = -n.x/2; f < n.x/2; f++) {
-		double v = fun((double)f/(double)scale-3.14159)*scale;
-		res[f+n.x/2][(int) v + n.y/2] = pixelGray(0);
+		double v = fun((double)f/(double)scale)*scale;
+		res[f+n.x/2][(int) ((double)n.y/2 - v)] = pixelGray(0);
 	}
 
 	return i;
