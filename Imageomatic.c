@@ -79,7 +79,6 @@ Int2 imagePaint(String cor, Int2 n, Image res)
 	int color[3] = {0,0,0};
 
 	strtol(cor, &seq, 16);
-
 	if(strlen(seq)!=0)
 		while( fgets(line, MAX_LINE, file) != NULL ){
 			sscanf(line,"%s %s", rgb, name);
@@ -195,7 +194,7 @@ Int2 imagePosterize(Image img, Int2 n, int factor, Image res)
 		nColors = pow(2, factor);
 	} else nColors = 0;
 
-	int diff = MAX_COLOR/nColors;
+	int diff = 256/nColors;
 
 	Int2 i;
 	for(i.y = 0; i.y < n.y; i.y++)
@@ -272,7 +271,13 @@ Int2 imageOrderedDithering(Image img, Int2 n, Image res)
 
 Int2 imageSteganography(Image img, Int2 n, String s, Image res)
 {
-	return int2Error;
+	while(*s != '\0'){
+		if( *s < 32 || *s > 95 || *s == 64)
+			*s = '?';
+		s++;
+	}
+	printf("%s", s);
+	return n;
 }
 
 
