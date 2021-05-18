@@ -271,10 +271,12 @@ Int2 imageOrderedDithering(Image img, Int2 n, Image res)
 
 Int2 imageSteganography(Image img, Int2 n, String s, Image res)
 {
-	while(*s != '\0'){
-		if( *s < 32 || *s > 95 || *s == 64)
-			*s = '?';
-		s++;
+	stringToUpperCase(s);
+	int count = 0;
+	while(s[count] != '\0'){
+		if( s[count] < 32 ||  s[count] > 95 ||  s[count] == 64)
+			 s[count] = '?';
+		count++;
 	}
 	printf("%s", s);
 	return n;
