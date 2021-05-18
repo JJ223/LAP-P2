@@ -172,10 +172,10 @@ Int2 imageBlur(Image img, Int2 n, int nivel, Image res)
 Int2 imageRotation90(Image img, Int2 n, Image res)
 {
 	Int2 i;
-	for(i.y = 0; i.y < n.y; i.y++)
-		for(i.x = 0; i.x < n.x; i.x++) {
-			res[i.x][i.y] = img[n.x - i.y][n.y - i.x];
-		}
+	for(i.y = 0; i.y < n.x; i.y++)
+		for(i.x = 0; i.x < n.y; i.x++)
+			res[i.x][i.y] = img[i.y][n.y - i.x];
+		
 
 	return i;
 }
