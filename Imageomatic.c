@@ -130,7 +130,15 @@ Int2 imageDroplet(Int2 n, Image res)
 
 Int2 imageMask(Image img1, Int2 n1, Image img2, Int2 n2, Image res) // pre: int2Equals(n1, n2) valor1 * (valor2/256)
 {
-	return n1;
+	Int2 i, j;
+
+	for(i.y=0; i.y < n1.y; i.y++)
+		for(i.x=0; i.x < n1.x; i.x++) {
+			res[i.x][i.y].blue = img1[i.x][i.y].blue*((float)img2[i.x][i.y].blue/MAX_COLOR);
+			res[i.x][i.y].red = img1[i.x][i.y].red*((float)img2[i.x][i.y].red/MAX_COLOR);
+			res[i.x][i.y].green = img1[i.x][i.y].green*((float)img2[i.x][i.y].green/MAX_COLOR);
+		}
+	return i;
 }
 
 Int2 imageGrayscale(Image img, Int2 n, Image res)
@@ -201,7 +209,7 @@ Int2 imagePosterize(Image img, Int2 n, int factor, Image res)
 Int2 imageHalf(Image img, Int2 n, Image res)
 {
 	Int2 i;
-
+	
 	for(i.y = 0; i.y < n.y/2; i.y++)
 		for(i.x = 0; i.x < n.x/2; i.x++) {
 			res[i.x][i.y] = img[i.x*2][i.y*2];
