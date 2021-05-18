@@ -276,8 +276,18 @@ Int2 imageSteganography(Image img, Int2 n, String s, Image res)
 	while(s[count] != '\0'){
 		if( s[count] < 32 ||  s[count] > 95 ||  s[count] == 64)
 			 s[count] = '?';
+		s[count] << 1;
 		count++;
 	}
+
+	Int2 i;
+	for(i.y = 0; i.y < n.y; i.y++)
+		for(i.x = 0; i.x < n.x; i.x++) {
+			
+			res[i.x][i.y] = pixel(0,0,0);
+		}
+	return i;
+
 	printf("%s", s);
 	return n;
 }
