@@ -67,35 +67,39 @@ Int2 imageCopy(Image img, Int2 n, Image res)
 Int2 imagePaint(String cor, Int2 n, Image res)
 {	
 	#define MAX_LINE   1024
+
 	typedef char Line[MAX_LINE];
-	FILE *fp = fopen(colorsFileName, "r");
-	Line s;
-	int total_read;
-	Pixel p = pixel(0,0,0);
+	FILE *file = fopen(colorsFileName, "r");
+	Line line;
+	Pixel p;
+	Int2 i;
+	char *seq;
 
 	char rgb[6], name[30];
-	int color[3];
+	int color[3] = {0,0,0};
 
-	while( fgets(s, MAX_LINE, fp) != NULL ){
-		sscanf(s,"%s %s", rgb, name);
-		if(!strcmp(name, cor)){
-			for(int i = 0; i < 3; i++){
-				char temp[2];
-				strncpy(temp, rgb+2*i, 2);
-				color[i] = strtol(temp,NULL, 16);
-			}
-			break;
-		 }
-	 }
-	 
-	 p = pixel(color[0],color[1],color[2]);
+	strtol(cor, &seq, 16);
 
-	 Int2 i;
-
-	 for(i.y = 0; i.y < n.y; i.y++)
-		for(i.x = 0; i.x < n.x; i.x++) {
-			res[i.x][i.y] = p;
+	if(strlen(seq)!=0)
+		while( fgets(line, MAX_LINE, file) != NULL ){
+			sscanf(line,"%s %s", rgb, name);
+			if(!strcmp(name, cor)) break;
 		}
+	else if(strlen(cor)<=6)
+		strcpy(rgb, cor);
+
+	if(!strcmp(name, cor) || !strcmp(rgb, cor))
+		for(int i = 0; i < 3; i++) {
+			char temp[2];
+			strncpy(temp, rgb+2*i, 2);
+			color[i] = strtol(temp, NULL, 16);
+		}
+	 
+	p = pixel(color[0],color[1],color[2]);
+
+	for(i.y = 0; i.y < n.y; i.y++)
+		for(i.x = 0; i.x < n.x; i.x++)           //Painting
+			res[i.x][i.y] = p;
 
 	return i;
 }
@@ -124,16 +128,8 @@ Int2 imageDroplet(Int2 n, Image res)
 	return i;
 }
 
-Int2 imageMask(Image img1, Int2 n1, Image img2, Int2 n2, Image res) // pre: int2Equals(n1, n2)
+Int2 imageMask(Image img1, Int2 n1, Image img2, Int2 n2, Image res) // pre: int2Equals(n1, n2) valor1 * (valor2/256)
 {
-	Int2 i;
-	for(i.y = 0; i.y < n.y; i.y++)
-		for(i.x = 0; i.x < n.x; i.x++) {
-			res[i.x][i.y] = pixelGray(pixelGrayAverage(img[i.x][i.y]));
-		}
-
-	return i;
-	valor1 * (valor2/256)
 	return n1;
 }
 
