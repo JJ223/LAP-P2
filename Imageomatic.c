@@ -76,9 +76,9 @@ Int2 imagePaint(String cor, Int2 n, Image res)
 	char rgb[6], name[30];
 	int color[3];
 
-	 while( fgets(s, MAX_LINE, fp) != NULL ){
-		 sscanf(s,"%s %s", rgb, name);
-		 if(!strcmp(name, cor)){
+	while( fgets(s, MAX_LINE, fp) != NULL ){
+		sscanf(s,"%s %s", rgb, name);
+		if(!strcmp(name, cor)){
 			for(int i = 0; i < 3; i++){
 				char temp[2];
 				strncpy(temp, rgb+2*i, 2);
@@ -113,7 +113,7 @@ Int2 imageNegative(Image img, Int2 n, Image res)
 
 Int2 imageDroplet(Int2 n, Image res)
 {
-		Int2 i;
+	Int2 i;
 	for(i.y = 0; i.y < n.y; i.y++)
 		for(i.x = 0; i.x < n.x; i.x++) {
 			res[i.x][i.y] = pixelGray(0.7 * MAX_COLOR + 0.3 * sin(int2Distance(int2Half(n), i) / 20.0) * MAX_COLOR);
@@ -124,7 +124,15 @@ Int2 imageDroplet(Int2 n, Image res)
 
 Int2 imageMask(Image img1, Int2 n1, Image img2, Int2 n2, Image res) // pre: int2Equals(n1, n2)
 {
-	return int2Error;
+	Int2 i;
+	for(i.y = 0; i.y < n.y; i.y++)
+		for(i.x = 0; i.x < n.x; i.x++) {
+			res[i.x][i.y] = pixelGray(pixelGrayAverage(img[i.x][i.y]));
+		}
+
+	return i;
+	valor1 * (valor2/256)
+	return n1;
 }
 
 Int2 imageGrayscale(Image img, Int2 n, Image res)
