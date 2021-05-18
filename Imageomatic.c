@@ -78,14 +78,16 @@ Int2 imagePaint(String cor, Int2 n, Image res)
 
 	 while( fgets(s, MAX_LINE, fp) != NULL ){
 		 sscanf(s,"%s %s", rgb, name);
-		 if(!strcmp(name, cor)){
+		  if((!strcmp(rgb, cor) || !strcmp(name, cor))){
 			for(int i = 0; i < 3; i++){
 				char temp[2];
 				strncpy(temp, rgb+2*i, 2);
 				color[i] = strtol(temp,NULL, 16);
 			}
+			break;
 		 }
 	 }
+	 
 	 p = pixel(color[0],color[1],color[2]);
 
 	 Int2 i;
@@ -138,6 +140,7 @@ Int2 imageGrayscale(Image img, Int2 n, Image res)
 	return i;
 }
 
+//Otimizar acesso, nao ir as posicoes desnecessarias
 Pixel colorBlur(Int2 n, int nivel, Image img, int x, int y){
 	int red = 0;
 	int green = 0;
@@ -208,7 +211,24 @@ Int2 imageHalf(Image img, Int2 n, Image res)
 
 Int2 imageFunctionPlotting(DoubleFun fun, int scale, Int2 n, Image res)
 {
-	return int2Error;
+	Int2 i;
+	for(i.y = 0; i.y < n.y; i.y++)
+		for(i.x = 0; i.x < n.x; i.x++) {
+			res[i.x][i.y] = pixelGray(MAX_COLOR);
+		}
+
+	for(i.y = 0; i.y < n.y; i.y++)
+		res[n.x/2][i.y] = pixelGray(0);
+
+	for(i.x = 0; i.x < n.x; i.x++)
+		res[i.x][n.y/2] = pixelGray(0);
+
+	int f;
+	for(int f = -n.x/2; f < n.x/2; f++) {
+		res[ f + n.x/2][(int) (fun(f)* (double) scale)] = pixelGray(0);
+	}
+
+	return i;
 }
 
 Int2 imageOrderedDithering(Image img, Int2 n, Image res)
