@@ -67,35 +67,39 @@ Int2 imageCopy(Image img, Int2 n, Image res)
 Int2 imagePaint(String cor, Int2 n, Image res)
 {	
 	#define MAX_LINE   1024
+
 	typedef char Line[MAX_LINE];
-	FILE *fp = fopen(colorsFileName, "r");
-	Line s;
-	int total_read;
-	Pixel p = pixel(0,0,0);
+	FILE *file = fopen(colorsFileName, "r");
+	Line line;
+	Pixel p;
+	Int2 i;
+	char *seq;
 
 	char rgb[6], name[30];
-	int color[3];
+	int color[3] = {0,0,0};
 
-	 while( fgets(s, MAX_LINE, fp) != NULL ){
-		 sscanf(s,"%s %s", rgb, name);
-		  if((!strcmp(rgb, cor) || !strcmp(name, cor))){
-			for(int i = 0; i < 3; i++){
-				char temp[2];
-				strncpy(temp, rgb+2*i, 2);
-				color[i] = strtol(temp,NULL, 16);
-			}
-			break;
-		 }
-	 }
-	 
-	 p = pixel(color[0],color[1],color[2]);
+	strtol(cor, &seq, 16);
 
-	 Int2 i;
-
-	 for(i.y = 0; i.y < n.y; i.y++)
-		for(i.x = 0; i.x < n.x; i.x++) {
-			res[i.x][i.y] = p;
+	if(strlen(seq)!=0)
+		while( fgets(line, MAX_LINE, file) != NULL ){
+			sscanf(line,"%s %s", rgb, name);
+			if(!strcmp(name, cor)) break;
 		}
+	else if(strlen(cor)<=6)
+		strcpy(rgb, cor);
+
+	if(!strcmp(name, cor) || !strcmp(rgb, cor))
+		for(int i = 0; i < 3; i++) {
+			char temp[2];
+			strncpy(temp, rgb+2*i, 2);
+			color[i] = strtol(temp, NULL, 16);
+		}
+	 
+	p = pixel(color[0],color[1],color[2]);
+
+	for(i.y = 0; i.y < n.y; i.y++)
+		for(i.x = 0; i.x < n.x; i.x++)           //Painting
+			res[i.x][i.y] = p;
 
 	return i;
 }
@@ -115,7 +119,7 @@ Int2 imageNegative(Image img, Int2 n, Image res)
 
 Int2 imageDroplet(Int2 n, Image res)
 {
-		Int2 i;
+	Int2 i;
 	for(i.y = 0; i.y < n.y; i.y++)
 		for(i.x = 0; i.x < n.x; i.x++) {
 			res[i.x][i.y] = pixelGray(0.7 * MAX_COLOR + 0.3 * sin(int2Distance(int2Half(n), i) / 20.0) * MAX_COLOR);
@@ -124,9 +128,17 @@ Int2 imageDroplet(Int2 n, Image res)
 	return i;
 }
 
-Int2 imageMask(Image img1, Int2 n1, Image img2, Int2 n2, Image res) // pre: int2Equals(n1, n2)
+Int2 imageMask(Image img1, Int2 n1, Image img2, Int2 n2, Image res) // pre: int2Equals(n1, n2) valor1 * (valor2/256)
 {
-	return int2Error;
+	Int2 i, j;
+
+	for(i.y=0; i.y < n1.y; i.y++)
+		for(i.x=0; i.x < n1.x; i.x++) {
+			res[i.x][i.y].blue = img1[i.x][i.y].blue*((float)img2[i.x][i.y].blue/MAX_COLOR);
+			res[i.x][i.y].red = img1[i.x][i.y].red*((float)img2[i.x][i.y].red/MAX_COLOR);
+			res[i.x][i.y].green = img1[i.x][i.y].green*((float)img2[i.x][i.y].green/MAX_COLOR);
+		}
+	return i;
 }
 
 Int2 imageGrayscale(Image img, Int2 n, Image res)
@@ -168,10 +180,10 @@ Int2 imageBlur(Image img, Int2 n, int nivel, Image res)
 Int2 imageRotation90(Image img, Int2 n, Image res)
 {
 	Int2 i;
-	for(i.y = 0; i.y < n.y; i.y++)
-		for(i.x = 0; i.x < n.x; i.x++) {
-			res[i.x][i.y] = img[n.x - i.y][n.y - i.x];
-		}
+	for(i.y = 0; i.y < n.x; i.y++)
+		for(i.x = 0; i.x < n.y; i.x++)
+			res[i.x][i.y] = img[i.y][n.y - i.x];
+		
 
 	return i;
 }
@@ -197,7 +209,7 @@ Int2 imagePosterize(Image img, Int2 n, int factor, Image res)
 Int2 imageHalf(Image img, Int2 n, Image res)
 {
 	Int2 i;
-
+	
 	for(i.y = 0; i.y < n.y/2; i.y++)
 		for(i.x = 0; i.x < n.x/2; i.x++) {
 			res[i.x][i.y] = img[i.x*2][i.y*2];
