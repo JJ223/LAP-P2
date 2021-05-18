@@ -74,21 +74,19 @@ Int2 imagePaint(String cor, Int2 n, Image res)
 	Pixel p = pixel(0,0,0);
 
 	char rgb[6], name[30];
-	char red[3], blue[3], green[3];
+	int color[3];
 
 	 while( fgets(s, MAX_LINE, fp) != NULL ){
 		 sscanf(s,"%s %s", rgb, name);
 		 if(!strcmp(name, cor)){
-			memset(red, '\0', sizeof(red));
-			strncpy(red, rgb, 2);
-			memset(blue, '\0', sizeof(blue));
-			strncpy(blue, rgb+2, 2);
-			memset(green, '\0', sizeof(green));
-			strncpy(green, rgb+4, 2);
-
-			p = pixel(strtol(red,NULL, 16),strtol(blue,NULL, 16),strtol(green,NULL, 16));
+			for(int i = 0; i < 3; i++){
+				char temp[2];
+				strncpy(temp, rgb+2*i, 2);
+				color[i] = strtol(temp,NULL, 16);
+			}
 		 }
 	 }
+	 p = pixel(color[0],color[1],color[2]);
 
 	 Int2 i;
 
