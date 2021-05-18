@@ -254,7 +254,20 @@ Int2 imageOrderedDithering(Image img, Int2 n, Image res)
 					{15, 47,  7, 39, 13, 45,  5, 37},
 					{63, 31, 55, 23, 61, 29, 53, 21}
 			};
-	return int2Error;
+	
+	Int2 i;
+	
+	for(i.y = 0; i.y < n.y; i.y++)
+		for(i.x = 0; i.x < n.x; i.x++) {
+			double avg = (double) pixelGrayAverage(img[i.x][i.y]);
+			double intensity = avg / 4.0;
+			if(indexMatrix[i.x%8][i.y%8] < intensity)
+				res[i.x][i.y] = pixelGray(MAX_COLOR);
+			else
+				res[i.x][i.y] = pixelGray(0);
+		}
+	
+	return i;
 }
 
 Int2 imageSteganography(Image img, Int2 n, String s, Image res)
