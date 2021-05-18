@@ -142,10 +142,7 @@ Int2 imageGrayscale(Image img, Int2 n, Image res)
 
 //Otimizar acesso, nao ir as posicoes desnecessarias
 Pixel colorBlur(Int2 n, int nivel, Image img, int x, int y){
-	int red = 0;
-	int green = 0;
-	int blue = 0;
-	int counter = 0;
+	int red = 0, green = 0, blue = 0, counter = 0;
 
 	for(int j = -nivel; j < nivel+1; j++)
 		for(int k = -nivel; k < nivel+1; k++)
