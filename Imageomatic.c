@@ -312,7 +312,6 @@ Int2 imageSteganography(Image img, Int2 n, String s, Image res)
 	return n;
 }
 
-
 void imageTests(void)
 {
 	static Image img, img2, res;
