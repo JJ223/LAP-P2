@@ -129,13 +129,13 @@ Int2 imageDroplet(Int2 n, Image res)
 
 Int2 imageMask(Image img1, Int2 n1, Image img2, Int2 n2, Image res) // pre: int2Equals(n1, n2) valor1 * (valor2/256)
 {
-	Int2 i, j;
+	Int2 i;
 
 	for(i.y=0; i.y < n1.y; i.y++)
 		for(i.x=0; i.x < n1.x; i.x++) {
-			res[i.x][i.y].blue = img1[i.x][i.y].blue*((float)img2[i.x][i.y].blue/MAX_COLOR);
-			res[i.x][i.y].red = img1[i.x][i.y].red*((float)img2[i.x][i.y].red/MAX_COLOR);
-			res[i.x][i.y].green = img1[i.x][i.y].green*((float)img2[i.x][i.y].green/MAX_COLOR);
+			res[i.x][i.y].blue = img1[i.x][i.y].blue*((double)img2[i.x][i.y].blue/(double)MAX_COLOR);
+			res[i.x][i.y].red = img1[i.x][i.y].red*((double)img2[i.x][i.y].red/(double)MAX_COLOR);
+			res[i.x][i.y].green = img1[i.x][i.y].green*((double)img2[i.x][i.y].green/(double)MAX_COLOR);
 		}
 	return i;
 }
@@ -179,10 +179,10 @@ Int2 imageBlur(Image img, Int2 n, int nivel, Image res)
 Int2 imageRotation90(Image img, Int2 n, Image res)
 {
 	Int2 i;
-	for(i.y = 0; i.y < n.x; i.y++)
-		for(i.x = 0; i.x < n.y; i.x++)
-			res[i.x][i.y] = img[i.y][n.y - i.x];
-		
+	for(i.y = 0; i.y < n.y; i.y++)
+		for(i.x = 0; i.x < n.x; i.x++) {
+			res[n.x-1 - i.y][i.x] = img[i.x][i.y];
+		}
 
 	return i;
 }
@@ -286,7 +286,7 @@ void charToImg(Image res, Int2 i, char character) {
 
 Int2 imageSteganography(Image img, Int2 n, String s, Image res)
 {
-    #define END_OF_MESSAGE  '\0'
+	#define END_OF_MESSAGE  '\0'
 
 	Int2 i;
 	void stringToUpperCase(String s);
