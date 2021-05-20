@@ -76,25 +76,19 @@ Int2 imagePaint(String cor, Int2 n, Image res)
 	char *seq;
 
 	char rgb[6], name[30];
-	int color[3] = {0,0,0};
 
-	strtol(cor, &seq, 16);
+	int hex = strtol(cor, &seq, 16);
+
 	if(strlen(seq)!=0)
 		while( fgets(line, MAX_LINE, file) != NULL ){
 			sscanf(line,"%s %s", rgb, name);
-			if(!strcmp(name, cor)) break;
+			if(!strcmp(name, cor)) {
+				hex = strtol(rgb, NULL, 16);
+				break;
+			}
 		}
-	else if(strlen(cor)<=6)
-		strcpy(rgb, cor);
 
-	if(!strcmp(name, cor) || !strcmp(rgb, cor))
-		for(int i = 0; i < 3; i++) {
-			char temp[2];
-			strncpy(temp, rgb+2*i, 2);
-			color[i] = strtol(temp, NULL, 16);
-		}
-	 
-	p = pixel(color[0],color[1],color[2]);
+	p = pixel((hex >> 16), ((hex >> 8) & 0x00FF), hex & 0x0000FF);
 
 	for(i.y = 0; i.y < n.y; i.y++)
 		for(i.x = 0; i.x < n.x; i.x++)           //Painting
@@ -313,6 +307,7 @@ Int2 imageSteganography(Image img, Int2 n, String s, Image res)
 		}
 
 	if(!endOfMessage) charToImg(res, n, END_OF_MESSAGE);
+
 
 	return n;
 }
