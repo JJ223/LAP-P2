@@ -269,6 +269,21 @@ Int2 imageOrderedDithering(Image img, Int2 n, Image res)
 	return i;
 }
 
+void charToImg(Image res, Int2 i, char character) {
+	character = character & 0x3F;    							   					//ASCII 7bits to 6bits
+
+	res[i.x][i.y].red = (res[i.x][i.y].red & 0xFC) | ((character & 0x30)>>4);		   /* RED sem os dois ultimos bits e  
+																					   juntar com os bits mais significativos do char */
+
+
+	res[i.x][i.y].green = (res[i.x][i.y].green & 0xFC) | ((character & 0xC)>>2);	   /* GREEN sem os dois ultimos bits
+																	   	 			   juntar com os bits do meio do char */
+
+
+	res[i.x][i.y].blue = (res[i.x][i.y].blue & 0xFC) | (character & 0x3);		  	   /* BLUE sem os dois ultimos bits
+																		 			   juntar com os bits menos significativos do char */
+}
+
 Int2 imageSteganography(Image img, Int2 n, String s, Image res)
 {
     #define END_OF_MESSAGE  '\0'
