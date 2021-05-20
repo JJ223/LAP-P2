@@ -271,27 +271,36 @@ Int2 imageOrderedDithering(Image img, Int2 n, Image res)
 
 Int2 imageSteganography(Image img, Int2 n, String s, Image res)
 {
-	stringToUpperCase(s);
-	int count = 0;
-	while(s[count] != '\0'){
-		if( s[count] < 32 ||  s[count] > 95 ||  s[count] == 64)
-			 s[count] = '?';
-		s[count] << 1;
-		count++;
-	}
+    #define END_OF_MESSAGE  '\0'
 
 	Int2 i;
+	void stringToUpperCase(String s);
+
+	stringToUpperCase(s);
+
+	char *pos = s;
+	bool endOfMessage=false;
+
 	for(i.y = 0; i.y < n.y; i.y++)
 		for(i.x = 0; i.x < n.x; i.x++) {
-			
-			res[i.x][i.y] = pixel(0,0,0);
-		}
-	return i;
 
-	printf("%s", s);
+			res[i.x][i.y] = img[i.x][i.y];
+
+			if(!endOfMessage) {
+				if( (*pos < 32 ||  *pos > 95 ||  *pos == 64) && *pos != END_OF_MESSAGE)
+			 		*pos = '?';
+
+				charToImg(res, i, *pos);
+				
+				if(*pos == END_OF_MESSAGE) endOfMessage=true;
+				pos++;
+			} 
+		}
+
+	if(!endOfMessage) charToImg(res, n, END_OF_MESSAGE);
+
 	return n;
 }
-
 
 void imageTests(void)
 {
