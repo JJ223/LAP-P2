@@ -174,9 +174,8 @@ Int2 imageRotation90(Image img, Int2 n, Image res)
 {
 	Int2 i;
 	for(i.y = 0; i.y < n.y; i.y++)
-		for(i.x = 0; i.x < n.x; i.x++) {
+		for(i.x = 0; i.x < n.x; i.x++)
 			res[n.x-1 - i.y][i.x] = img[i.x][i.y];
-		}
 
 	return i;
 }
@@ -188,13 +187,12 @@ Int2 imagePosterize(Image img, Int2 n, int factor, Image res)
 		nColors = pow(2, factor);
 	} else nColors = 0;
 
-	int diff = 256/nColors;
+	int mult = 256/nColors;
 
 	Int2 i;
 	for(i.y = 0; i.y < n.y; i.y++)
-		for(i.x = 0; i.x < n.x; i.x++) {
-			res[i.x][i.y] = pixel((img[i.x][i.y].red/diff)*diff, (img[i.x][i.y].green/diff)*diff,(img[i.x][i.y].blue/diff)*diff);
-		}
+		for(i.x = 0; i.x < n.x; i.x++)
+			res[i.x][i.y] = pixel((img[i.x][i.y].red/mult)*mult, (img[i.x][i.y].green/mult)*mult,(img[i.x][i.y].blue/mult)*mult);
 
 	return i;
 }
@@ -204,9 +202,8 @@ Int2 imageHalf(Image img, Int2 n, Image res)
 	Int2 i;
 	
 	for(i.y = 0; i.y < n.y/2; i.y++)
-		for(i.x = 0; i.x < n.x/2; i.x++) {
+		for(i.x = 0; i.x < n.x/2; i.x++)
 			res[i.x][i.y] = img[i.x*2][i.y*2];
-		}
 	
 	return i;
 }
@@ -214,21 +211,14 @@ Int2 imageHalf(Image img, Int2 n, Image res)
 Int2 imageFunctionPlotting(DoubleFun fun, int scale, Int2 n, Image res)
 {
 	Int2 i;
-	for(i.y = 0; i.y < n.y; i.y++)
+	for(i.y = 0; i.y < n.y; i.y++){
 		for(i.x = 0; i.x < n.x; i.x++) {
-			res[i.x][i.y] = pixelGray(MAX_COLOR);
-		}
-
-	for(i.y = 0; i.y < n.y; i.y++)
-		res[n.x/2][i.y] = pixelGray(0);
-
-	for(i.x = 0; i.x < n.x; i.x++)
-		res[i.x][n.y/2] = pixelGray(0);
-
-	int f;
-	for(int f = -n.x/2; f < n.x/2; f++) {
-		double v = fun((double)f/(double)scale)*scale;
-		res[f+n.x/2][(int) ((double)n.y/2 - v)] = pixelGray(0);
+			if(n.x/2 == i.x || n.y/2 == i.y)
+				res[i.x][n.y/2] = pixelGray(0);
+			else res[i.x][i.y] = pixelGray(MAX_COLOR);
+			}
+		double v = fun((double)(i.y-n.y/2)/(double)scale)*scale;
+		res[i.y][(int) ((double)n.y/2 - v)] = pixelGray(0);
 	}
 
 	return i;
