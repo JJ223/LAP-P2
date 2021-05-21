@@ -18,17 +18,9 @@ tab = 4 espaços
 
 Comentarios:
 
-?????????????????????????
-?????????????????????????
-?????????????????????????
-?????????????????????????
-?????????????????????????
-?????????????????????????
-
 */
 
 #include "Imageomatic.h"
-
 
 
 /*** TYPE Int2 ***/
@@ -71,7 +63,6 @@ Int2 imagePaint(String cor, Int2 n, Image res)
 	typedef char Line[MAX_LINE];
 	FILE *file = fopen(colorsFileName, "r");
 	Line line;
-	Pixel p;
 	Int2 i;
 	char *seq;
 
@@ -88,11 +79,9 @@ Int2 imagePaint(String cor, Int2 n, Image res)
 			}
 		}
 
-	p = pixel((hex >> 16), ((hex >> 8) & 0x00FF), hex & 0x0000FF);
-
 	for(i.y = 0; i.y < n.y; i.y++)
 		for(i.x = 0; i.x < n.x; i.x++)           //Painting
-			res[i.x][i.y] = p;
+			res[i.x][i.y] = pixel((hex >> 16), ((hex >> 8) & 0x00FF), hex & 0x0000FF);
 
 	return i;
 }
@@ -115,7 +104,8 @@ Int2 imageDroplet(Int2 n, Image res)
 	Int2 i;
 	for(i.y = 0; i.y < n.y; i.y++)
 		for(i.x = 0; i.x < n.x; i.x++) {
-			res[i.x][i.y] = pixelGray(0.7 * MAX_COLOR + 0.3 * sin(int2Distance(int2Half(n), i) / 20.0) * MAX_COLOR);
+			res[i.x][i.y] = pixelGray(0.7 * MAX_COLOR + 0.3 * 
+				sin(int2Distance(int2Half(n), i) / 20.0) * MAX_COLOR);
 		}
 
 	return i;
@@ -127,9 +117,9 @@ Int2 imageMask(Image img1, Int2 n1, Image img2, Int2 n2, Image res) // pre: int2
 
 	for(i.y=0; i.y < n1.y; i.y++)
 		for(i.x=0; i.x < n1.x; i.x++) {
-			res[i.x][i.y].blue = img1[i.x][i.y].blue*((double)img2[i.x][i.y].blue/(double)MAX_COLOR);
-			res[i.x][i.y].red = img1[i.x][i.y].red*((double)img2[i.x][i.y].red/(double)MAX_COLOR);
-			res[i.x][i.y].green = img1[i.x][i.y].green*((double)img2[i.x][i.y].green/(double)MAX_COLOR);
+			res[i.x][i.y].blue = img1[i.x][i.y].blue*((double)img2[i.x][i.y].blue/MAX_COLOR);
+			res[i.x][i.y].red = img1[i.x][i.y].red*((double)img2[i.x][i.y].red/MAX_COLOR);
+			res[i.x][i.y].green = img1[i.x][i.y].green*((double)img2[i.x][i.y].green/MAX_COLOR);
 		}
 	return i;
 }
@@ -145,27 +135,25 @@ Int2 imageGrayscale(Image img, Int2 n, Image res)
 	return i;
 }
 
-//Otimizar acesso, nao ir as posicoes desnecessarias
-Pixel colorBlur(Int2 n, int nivel, Image img, int x, int y){
-	int red = 0, green = 0, blue = 0, counter = 0;
-
-	for(int j = -nivel; j < nivel+1; j++)
-		for(int k = -nivel; k < nivel+1; k++)
-			if( n.y > y+j && y+j >= 0 && n.x > x+k && x+k >= 0){
-				red += img[x+k][y+j].red;
-				green += img[x+k][y+j].green;
-				blue += img[x+k][y+j].blue;
-				counter++;
-			}
-	return pixel(red/counter, green/counter, blue/counter);
-}
-
 Int2 imageBlur(Image img, Int2 n, int nivel, Image res)
 {	
+	int red, green, blue, counter;
 	Int2 i;
 	for(i.y = 0; i.y < n.y; i.y++)
-		for(i.x = 0; i.x < n.x; i.x++) 
-			res[i.x][i.y] = colorBlur(n, nivel, img, i.x, i.y);
+		for(i.x = 0; i.x < n.x; i.x++){
+			red = 0, green = 0, blue = 0, counter = 0;
+
+			for(int j = -nivel; j < nivel+1; j++)
+				for(int k = -nivel; k < nivel+1; k++)
+					if( n.y > i.y+j && i.y+j >= 0 && n.x > i.x+k && i.x+k >= 0){
+						red += img[i.x+k][i.y+j].red;
+						green += img[i.x+k][i.y+j].green;
+						blue += img[i.x+k][i.y+j].blue;
+						counter++;
+					}
+			
+			res[i.x][i.y] = pixel(red/counter, green/counter, blue/counter);
+		}
 
 	return i;
 }
@@ -192,7 +180,8 @@ Int2 imagePosterize(Image img, Int2 n, int factor, Image res)
 	Int2 i;
 	for(i.y = 0; i.y < n.y; i.y++)
 		for(i.x = 0; i.x < n.x; i.x++)
-			res[i.x][i.y] = pixel((img[i.x][i.y].red/mult)*mult, (img[i.x][i.y].green/mult)*mult,(img[i.x][i.y].blue/mult)*mult);
+			res[i.x][i.y] = pixel((img[i.x][i.y].red/mult)*mult,
+				(img[i.x][i.y].green/mult)*mult, (img[i.x][i.y].blue/mult)*mult);
 
 	return i;
 }
@@ -216,7 +205,7 @@ Int2 imageFunctionPlotting(DoubleFun fun, int scale, Int2 n, Image res)
 			if(n.x/2 == i.x || n.y/2 == i.y)
 				res[i.x][n.y/2] = pixelGray(0);
 			else res[i.x][i.y] = pixelGray(MAX_COLOR);
-			}
+		}
 		double v = fun((double)(i.y-n.y/2)/(double)scale)*scale;
 		res[i.y][(int) ((double)n.y/2 - v)] = pixelGray(0);
 	}
@@ -299,7 +288,7 @@ Int2 imageSteganography(Image img, Int2 n, String s, Image res)
 	if(!endOfMessage) charToImg(res, n, END_OF_MESSAGE);
 
 
-	return n;
+	return i;
 }
 
 void imageTests(void)
