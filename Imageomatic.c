@@ -242,18 +242,18 @@ Int2 imageOrderedDithering(Image img, Int2 n, Image res)
 	return i;
 }
 
-void charToImg(Image res, Int2 i, char character) {
-	character = character & 0x3F;    							   					//ASCII 7bits to 6bits
+void charToImg(Pixel *pixel, char character) {
+	if(character>=0x40 || character<=0x5F) character = character - 0x40;
 
-	res[i.x][i.y].red = (res[i.x][i.y].red & 0xFC) | ((character & 0x30)>>4);		   /* RED sem os dois ultimos bits e  
+	pixel->red = (pixel->red & 0xFC) | (character >> 4);		   				   	   /* RED sem os dois ultimos bits e  
 																					   juntar com os bits mais significativos do char */
 
 
-	res[i.x][i.y].green = (res[i.x][i.y].green & 0xFC) | ((character & 0xC)>>2);	   /* GREEN sem os dois ultimos bits
+	pixel->green = (pixel->green & 0xFC) | ((character & 0b1100)>>2);	   			   /* GREEN sem os dois ultimos bits
 																	   	 			   juntar com os bits do meio do char */
 
 
-	res[i.x][i.y].blue = (res[i.x][i.y].blue & 0xFC) | (character & 0x3);		  	   /* BLUE sem os dois ultimos bits
+	pixel->blue = (pixel->blue & 0xFC) | (character & 0b11);		  	   			   /* BLUE sem os dois ultimos bits
 																		 			   juntar com os bits menos significativos do char */
 }
 
@@ -271,21 +271,21 @@ Int2 imageSteganography(Image img, Int2 n, String s, Image res)
 
 	for(i.y = 0; i.y < n.y; i.y++)
 		for(i.x = 0; i.x < n.x; i.x++) {
-
+			
 			res[i.x][i.y] = img[i.x][i.y];
 
 			if(!endOfMessage) {
 				if( (*pos < 32 ||  *pos > 95 ||  *pos == 64) && *pos != END_OF_MESSAGE)
 			 		*pos = '?';
-
-				charToImg(res, i, *pos);
+					 
+				charToImg(&(res[i.x][i.y]), *pos);
 				
 				if(*pos == END_OF_MESSAGE) endOfMessage=true;
 				pos++;
 			} 
 		}
 
-	if(!endOfMessage) charToImg(res, n, END_OF_MESSAGE);
+	if(!endOfMessage) charToImg(&(res[n.x-1][n.y-1]), END_OF_MESSAGE);
 
 
 	return i;
