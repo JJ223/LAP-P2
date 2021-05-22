@@ -200,14 +200,14 @@ Int2 imageHalf(Image img, Int2 n, Image res)
 Int2 imageFunctionPlotting(DoubleFun fun, int scale, Int2 n, Image res)
 {
 	Int2 i;
-	for(i.y = 0; i.y < n.y; i.y++){
-		for(i.x = 0; i.x < n.x; i.x++) {
+	for(i.x = 0; i.x < n.x; i.x++){
+		for(i.y = 0; i.y < n.y; i.y++) {
 			if(n.x/2 == i.x || n.y/2 == i.y)
 				res[i.x][n.y/2] = pixelGray(0);
 			else res[i.x][i.y] = pixelGray(MAX_COLOR);
 		}
-		double v = fun((double)(i.y-n.y/2)/(double)scale)*scale;
-		res[i.y][(int) ((double)n.y/2 - v)] = pixelGray(0);
+		double v = fun((double)(i.x-n.x/2)/(double)scale)*scale;
+		res[i.x][(int) ((double)n.y/2 - v)] = pixelGray(0);
 	}
 
 	return i;
